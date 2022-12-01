@@ -1,11 +1,13 @@
 #! user/bin/python3 
 
-# Buscador de leaks en commits de git - Adquisición de Datos
+# Buscador de leaks en commits de git - Adquisición de Datos - iMat
 # Lara Ocón Madrid - 202115710
 
+
+# Importamos las librerías necesarias
 from git import Repo
 
-import re, signal, sys , time
+import re, signal, sys , time, os
 
 import pandas as pd
 
@@ -13,13 +15,12 @@ from tkinter import *
 from tkinter import ttk
 
 
+
 def handler_signal(signal, frame):
-    # Esta función controla la salida del programa por una señal de
-    # ctrl+C
+    # Controlamos la señal de control C, para salir correctamente del programa
+
     print("\n\n [!] Out .......\n")
     sys.exit(1)
-
-signal.signal(signal.SIGINT, handler_signal)
 
 
 def step():
@@ -89,31 +90,47 @@ def transform(lista_commits, kwords):
 
     return leaks_encontrados 
 
+
 def load(leaks_encontrados):
     # Función carga: cargamos los datos imprimiéndolos por pantalla
     print("\n"+"\033[1;31m"+"Leaks encontrados:"+"\033[0;m"+"\n")
     for leak in leaks_encontrados:
         print(leak)
 
+
 if __name__ == "__main__":
 
+    # Controlamos la señal de control C, para salir correctamente del programa
+    signal.signal(signal.SIGINT, handler_signal)
+
+
+    url = 'https://github.com/skalenetwork/skale-manager'
+
+    # Clonamos el repositorio (si no existe) dentro de la carpeta skale
     REPO_DIR = "./skale/skale-manager"
+    if not os.path.exists(REPO_DIR):
+        Repo.clone_from(url, 'skale/skale-manager')
+
+
+    # Introducimos las palabras clave que queremos buscar en los mensajes de commits
     kwords = ['credentials', 'password','key']
 
+    # Creamos la ventana de progreso
     root = Tk()
     root.title('ETL leaks en commits')
-    # root.iconbitmap('c:/gui/codemy.ico')
     root.geometry("500x200")
     
-    # Barra de progreso
+    # Barra de progreso, esta se irá actualizando a medida que superamos
+    # las distintas fases de la ETL
     my_progress = ttk.Progressbar(root, orient=HORIZONTAL, length=400, mode='determinate')
     my_progress.pack(pady=20)
 
     my_label = Label(root, text=" ")
     my_label.pack(pady=20)
 
+    # Botón para iniciar la ETL
     my_button = Button(root, text = "Iniciar ETL", command=step)
     my_button.pack(pady=20)
 
-
+    
     root.mainloop()

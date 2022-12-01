@@ -93,9 +93,17 @@ def transform(lista_commits, kwords):
 
 def load(leaks_encontrados):
     # Función carga: cargamos los datos imprimiéndolos por pantalla
+    # y guardandolos en un dataframe para después pasarlo a csv
+    df = pd.DataFrame()
     print("\n"+"\033[1;31m"+"Leaks encontrados:"+"\033[0;m"+"\n")
+    i = 0
     for leak in leaks_encontrados:
-        print(leak)
+        i += 1
+        print(f"{i}) {leak}")
+        df.loc[len(df.index), 'Leaks'] = [leak]
+    
+    # exportamos el dataframe a un csv
+    df.to_csv("leaks_encontrados.csv")
 
 
 if __name__ == "__main__":

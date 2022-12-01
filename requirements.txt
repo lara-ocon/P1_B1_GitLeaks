@@ -1,3 +1,5 @@
 pandas
 GitPython
-tkinter
+tk
+regex
+python-time

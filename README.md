@@ -15,6 +15,6 @@ En segundo lugar, creamos la lista de las palabras que vamos a buscar en los men
 Nuestra ETL consistirá en: 
 1) Extracción de datos: Cargamos el repositorio a través de su path. (Una vez completado esto, ya llevaremos 1/3 de nuestra barra de progreso).
 
-2) Transformación de datos: Buscamos, mediante expresiones regulares, dentro de los mensajes de commits del repo las palabras clave y vamos guardando dichos mensajes en una lista. (Finalizado esto, sumamos 1/3 a nuestra barra de progreso).
+2) Transformación de datos: Buscamos, mediante expresiones regulares, dentro de los mensajes de commits del repo las palabras clave y vamos guardando dichos mensajes en un diccionario del tipo {hash : mensaje}. (Finalizado esto, sumamos 1/3 a nuestra barra de progreso).
 
-3) Carga de datos: Cargamos nuestros datos (la lista que nos ha pasado la fase de transformación) imprimiéndolos por pantalla y también agregándolos a un dataframe de pandas. Finalmente guardamos el dataframe en un csv y la barra de progreso habrá finalizado.
+3) Carga de datos: Cargamos nuestros datos (el diccionario que nos ha pasado la funcion transform) imprimiéndolos por pantalla y también agregándolos a un dataframe de pandas. Finalmente guardamos el dataframe en un csv y la barra de progreso habrá finalizado.

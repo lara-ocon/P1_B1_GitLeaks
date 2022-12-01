@@ -81,12 +81,14 @@ def transform(lista_commits, kwords):
     # contengan dichas palabras en una lista que devolveremos como 
     # output
 
-    leaks_encontrados = []
+    leaks_encontrados = {}
 
     for commit in lista_commits:
         for kword in kwords:
             if re.search(kword, commit.message, re.I):
-                leaks_encontrados.append(commit.message)
+                clave = commit.hexsha   # obtenemos el hash del commit
+                valor = commit.message  # obtenemos el mensaje del commit
+                leaks_encontrados[clave] = valor
 
     return leaks_encontrados 
 
@@ -97,11 +99,14 @@ def load(leaks_encontrados):
     df = pd.DataFrame()
     print("\n"+"\033[1;31m"+"Leaks encontrados:"+"\033[0;m"+"\n")
     i = 0
-    for leak in leaks_encontrados:
+    for key in leaks_encontrados:
         i += 1
-        print(f"{i}) {leak}")
-        df.loc[len(df.index), 'Leaks'] = [leak]
-    
+        # Imprimimos los leaks por pantalla
+        print("\n"+"\033[1;32m"+f"{key}"+"\033[0;m"+" : "+leaks_encontrados[key])
+        # Guardamos los leaks en un dataframe
+        df.loc[len(df.index), 'Hash'] = key
+        df.loc[len(df.index) -1, 'Mensaje'] = leaks_encontrados[key]
+
     # exportamos el dataframe a un csv
     df.to_csv("leaks_encontrados.csv")
 

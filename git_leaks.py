@@ -122,6 +122,7 @@ if __name__ == "__main__":
     # Clonamos el repositorio (si no existe) dentro de la carpeta skale
     REPO_DIR = "./skale/skale-manager"
     if not os.path.exists(REPO_DIR):
+        print(f"\nClonando repositorio {url}...\n")
         Repo.clone_from(url, 'skale/skale-manager')
 
 
